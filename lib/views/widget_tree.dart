@@ -21,7 +21,10 @@ class WidgetTree extends StatelessWidget {
           width: 24,
           child: SvgPicture.asset('assets/images/logo.svg'),
         ),
-        title: const Text(AppStrings.appTitle),
+        title: const Text(
+          AppStrings.appTitle,
+          style: TextStyle(fontFamily: 'Poppins', fontSize: 24),
+        ),
         centerTitle: false,
         actions: [IconButton(icon: const Icon(Icons.menu), onPressed: () {})],
       ),
