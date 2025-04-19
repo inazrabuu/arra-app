@@ -97,3 +97,8 @@ flutter:
         - asset: fonts/Poppins-Regular.ttf
         - asset: fonts/Poppins-Bold.ttf
           weight: 700
+    - family: "SF Pro Display"
+      fonts:
+        - asset: fonts/SfProdisplay-Regular.otf
+        - asset: fonts/sfProdisplay-Bold.otf
+          weight: 700
