@@ -1,3 +1,4 @@
+import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/views/widget_tree.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Arra Jewelry ID',
+      title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -69,6 +70,6 @@ class _LaunchDeciderState extends State<LaunchDecider> {
 
   @override
   Widget build(BuildContext context) {
-    return _showSplash ? const Splash() : const HomePage();
+    return _showSplash ? const Splash() : const WidgetTree();
   }
 }

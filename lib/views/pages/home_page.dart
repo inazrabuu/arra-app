@@ -1,3 +1,4 @@
+import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -5,6 +6,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Home Page'));
+    return const Center(child: Text(AppStrings.homePageTitle));
   }
 }

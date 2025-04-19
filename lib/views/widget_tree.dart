@@ -1,3 +1,4 @@
+import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/data/notifiers.dart';
 import 'package:arrajewelry/views/pages/home_page.dart';
 import 'package:arrajewelry/views/pages/product_page.dart';
@@ -20,7 +21,7 @@ class WidgetTree extends StatelessWidget {
           width: 24,
           child: SvgPicture.asset('assets/images/logo.svg'),
         ),
-        title: const Text('ARRA'),
+        title: const Text(AppStrings.appTitle),
         centerTitle: false,
         actions: [IconButton(icon: const Icon(Icons.menu), onPressed: () {})],
       ),
