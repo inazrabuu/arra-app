@@ -1,6 +1,9 @@
 class AppStrings {
   static const appName = 'Arra Jewelry ID';
   static const appTitle = 'ARRA';
+  static const menuHome = 'Home';
+  static const menuProduct = 'Prods';
+  static const menuTransaction = 'Trx';
   static const welcomeMessage = 'Welcome to Arra Jewelry ID';
   static const homePageTitle = 'Home';
   static const homeLatest = 'Latest Products';
