@@ -5,4 +5,7 @@ class AppStrings {
   static const homePageTitle = 'Home';
   static const productPageTitle = 'Products';
   static const transactionPageTitle = 'Transactions';
+  static const transactionPageHistory = 'History';
+  static const unfulfilled = 'Unfulfilled';
+  static const unpaid = 'Unpaid';
 }
