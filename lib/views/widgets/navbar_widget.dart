@@ -17,7 +17,7 @@ class NavbarWidget extends StatelessWidget {
               label: AppStrings.menuHome,
             ),
             NavigationDestination(
-              icon: Icon(Icons.inventory_2_rounded),
+              icon: Icon(Icons.diamond_rounded),
               label: AppStrings.menuProduct,
             ),
             NavigationDestination(
