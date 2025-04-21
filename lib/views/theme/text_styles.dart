@@ -45,4 +45,15 @@ class AppText {
       ),
     );
   }
+
+  static Widget smallDate(String text, {Color? color}) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontStyle: FontStyle.italic,
+        fontSize: 12,
+        color: color ?? Colors.black,
+      ),
+    );
+  }
 }
