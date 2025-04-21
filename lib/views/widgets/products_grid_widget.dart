@@ -34,7 +34,7 @@ class ProductsGridWidget extends StatelessWidget {
                 children: [
                   Center(
                     child: Image.asset(
-                      'assets/images/products/1.png',
+                      "assets/images/products/${index + 1}.png",
                       width: 100.0,
                     ),
                   ),
