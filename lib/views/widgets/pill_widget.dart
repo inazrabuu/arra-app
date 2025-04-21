@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class PillWidget extends StatelessWidget {
-  String text;
-  Color color;
+  final String text;
+  final Color color;
 
-  PillWidget({super.key, required this.text, required this.color});
+  const PillWidget({super.key, required this.text, required this.color});
 
   @override
   Widget build(BuildContext context) {
