@@ -31,6 +31,17 @@ class AppText {
     );
   }
 
+  static Widget xtra(String text, {Color? color}) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.w700,
+        color: color ?? Colors.black,
+      ),
+    );
+  }
+
   static Widget gridTitle(String text, {Color? color}) {
     return Text(text, style: TextStyle(fontSize: 16));
   }
