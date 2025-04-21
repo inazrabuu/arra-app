@@ -1,3 +1,4 @@
+import 'package:arrajewelry/constants/candy_colors.dart';
 import 'package:arrajewelry/views/theme/text_styles.dart';
 import 'package:arrajewelry/views/widgets/pill_widget.dart';
 import 'package:flutter/material.dart';
@@ -56,9 +57,17 @@ class TransactionListWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    PillWidget(text: 'Unfulfilled', color: Color(0xFF9B5DE5)),
+                    PillWidget(
+                      text: 'Unfulfilled',
+                      color: CandyColors.colors['purple']!,
+                    ),
                     SizedBox(width: 4),
-                    PillWidget(text: 'Unpaid', color: Color(0xFF4CC9F0)),
+                    PillWidget(
+                      text: 'Unpaid',
+                      color: CandyColors.colors['blue']!,
+                    ),
+                    SizedBox(width: 4),
+                    PillWidget(text: 'OK', color: CandyColors.colors['green']!),
                   ],
                 ),
               ],
