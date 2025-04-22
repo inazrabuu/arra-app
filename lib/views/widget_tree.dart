@@ -30,8 +30,9 @@ class WidgetTree extends StatelessWidget {
       ),
       body: ValueListenableBuilder(
         valueListenable: selectedPageNotifier,
-        builder:
-            (context, selectedPage, child) => pages.elementAt(selectedPage),
+        builder: (context, selectedPage, child) {
+          return IndexedStack(index: selectedPage, children: pages);
+        },
       ),
       bottomNavigationBar: const NavbarWidget(),
     );
