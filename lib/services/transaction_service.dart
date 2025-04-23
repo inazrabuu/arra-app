@@ -31,8 +31,6 @@ class TransactionService {
     final int sumDebits = await _client.rpc('sum_transaction_debits');
     final int sumCredits = await _client.rpc('sum_transaction_credits');
 
-    print(sumDebits);
-
     return (sumCredits - sumDebits).toDouble();
   }
 }
