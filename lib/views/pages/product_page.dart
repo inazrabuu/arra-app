@@ -27,26 +27,33 @@ class _ProductPageState extends State<ProductPage> {
     setState(() => _products = data);
   }
 
+  Future<void> _onRefresh() async {
+    loadProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText.heading(AppStrings.productPageTitle),
-          Row(
-            children: [
-              Text('Products Count : '),
-              Text(
-                _products.length.toString(),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ],
-          ),
-          Padding(padding: EdgeInsets.all(12.0)),
-          ProductsGridWidget(items: _products),
-        ],
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppText.heading(AppStrings.productPageTitle),
+            Row(
+              children: [
+                Text('Products Count : '),
+                Text(
+                  _products.length.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ],
+            ),
+            Padding(padding: EdgeInsets.all(12.0)),
+            ProductsGridWidget(items: _products),
+          ],
+        ),
       ),
     );
   }
