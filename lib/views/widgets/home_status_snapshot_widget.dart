@@ -1,9 +1,19 @@
 import 'package:arrajewelry/constants/app_strings.dart';
+import 'package:arrajewelry/utils/helpers.dart';
 import 'package:arrajewelry/views/widgets/status_badge_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomeStatusSnapshotWidget extends StatelessWidget {
-  const HomeStatusSnapshotWidget({super.key});
+  final double balance;
+  final int unpaid;
+  final int unfulfilled;
+
+  const HomeStatusSnapshotWidget({
+    super.key,
+    required this.balance,
+    required this.unpaid,
+    required this.unfulfilled,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +25,24 @@ class HomeStatusSnapshotWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          StatusBadgeWidget(title: '', text: '1.000.000', color: 2, size: 2),
+          StatusBadgeWidget(
+            title: '',
+            text: Helpers.numberFormat(balance),
+            color: 2,
+            size: 2,
+          ),
           Row(
             children: [
               Expanded(
-                child: StatusBadgeWidget(title: AppStrings.unpaid, text: '2'),
+                child: StatusBadgeWidget(
+                  title: AppStrings.unpaid,
+                  text: Helpers.numberFormat(unpaid.toDouble()),
+                ),
               ),
               Expanded(
                 child: StatusBadgeWidget(
                   title: AppStrings.unfulfilled,
-                  text: '2',
+                  text: Helpers.numberFormat(unfulfilled.toDouble()),
                   color: 1,
                 ),
               ),
