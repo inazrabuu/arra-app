@@ -43,41 +43,49 @@ class _TransactionPageState extends State<TransactionPage> {
     });
   }
 
+  Future<void> _onRefresh() async {
+    countUns();
+    loadTransactions();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText.heading(AppStrings.transactionPageTitle),
-          SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: StatusBadgeWidget(
-                  title: AppStrings.unpaid,
-                  text: _unpaid.toString(),
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppText.heading(AppStrings.transactionPageTitle),
+            SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: StatusBadgeWidget(
+                    title: AppStrings.unpaid,
+                    text: _unpaid.toString(),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: StatusBadgeWidget(
-                  title: AppStrings.unfulfilled,
-                  text: _unfulfilled.toString(),
-                  color: 1,
+                Expanded(
+                  child: StatusBadgeWidget(
+                    title: AppStrings.unfulfilled,
+                    text: _unfulfilled.toString(),
+                    color: 1,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-            child: AppText.heading2(
-              AppStrings.transactionPageHistory,
-              color: Colors.grey[700],
+              ],
             ),
-          ),
-          TransactionListWidget(items: _transactions),
-        ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+              child: AppText.heading2(
+                AppStrings.transactionPageHistory,
+                color: Colors.grey[700],
+              ),
+            ),
+            TransactionListWidget(items: _transactions),
+          ],
+        ),
       ),
     );
   }
