@@ -4,12 +4,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class TransactionService {
   final SupabaseClient _client = Supabase.instance.client;
 
-  Future<List<TransactionModel>> fetchAll() async {
+  Future<List<TransactionModel>> fetchAll({int limit = 100}) async {
     final response = await _client
         .from(TransactionModel.tableName)
         .select()
         .order('trx_date', ascending: false)
-        .limit(100);
+        .limit(limit);
 
     return (response as List)
         .map((json) => TransactionModel.fromJson(json))
