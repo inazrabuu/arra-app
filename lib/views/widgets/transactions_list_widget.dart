@@ -53,6 +53,10 @@ class TransactionListWidget extends StatelessWidget {
           }
         }
 
+        Icon arrow =
+            items[index].isDebit
+                ? Icon(Icons.arrow_left_rounded, color: Colors.red)
+                : Icon(Icons.arrow_right_rounded, color: Colors.green);
         return Card(
           // padding: EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(
@@ -68,7 +72,12 @@ class TransactionListWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppText.bold('Trx #${items[index].orderNo}'),
+                          Row(
+                            children: [
+                              arrow,
+                              AppText.bold('Trx #${items[index].orderNo}'),
+                            ],
+                          ),
                           AppText.smallDate(formattedDate),
                         ],
                       ),
@@ -81,7 +90,24 @@ class TransactionListWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.end, children: pills),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Icon(Icons.subdirectory_arrow_right_rounded),
+                          Text(items[index].description),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: pills,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
