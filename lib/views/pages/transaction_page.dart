@@ -76,7 +76,7 @@ class _TransactionPageState extends State<TransactionPage> {
               color: Colors.grey[700],
             ),
           ),
-          TransactionListWidget(items: TransactionPage.items),
+          TransactionListWidget(items: _transactions),
         ],
       ),
     );
