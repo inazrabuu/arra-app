@@ -8,6 +8,7 @@ class ProductModel {
   final bool inTiktok;
   final bool inShopee;
   final int stock;
+  static String tableName = 'products';
 
   ProductModel({
     required this.id,
