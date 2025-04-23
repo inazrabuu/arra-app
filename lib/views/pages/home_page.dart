@@ -4,6 +4,7 @@ import 'package:arrajewelry/models/transaction_model.dart';
 import 'package:arrajewelry/services/product_service.dart';
 import 'package:arrajewelry/services/transaction_service.dart';
 import 'package:arrajewelry/views/widgets/home_latest_widget.dart';
+import 'package:arrajewelry/views/widgets/home_recent_widget.dart';
 import 'package:arrajewelry/views/widgets/home_status_snapshot_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:arrajewelry/constants/app_strings.dart';
@@ -44,8 +45,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _onRefresh() async {
-    await Future.delayed(Duration(seconds: 3));
-    print('refreshed!');
+    loadLatestProducts();
+    loadRecentTransaction();
   }
 
   @override
@@ -67,51 +68,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 8),
             Divider(thickness: 1, color: Colors.grey[300]),
             SizedBox(height: 8),
-            AppText.heading2(AppStrings.homeRecent, color: Colors.grey[700]),
-            SizedBox(height: 8),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: AppText.bold(
-                            "Order #${HomePage.transactions[index]['order_no']}",
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              AppText.gridPrice(
-                                HomePage.transactions[index]['total']
-                                    .toString(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-            ValueListenableBuilder(
-              valueListenable: selectedPageNotifier,
-              builder: (context, value, _) {
-                return GestureDetector(
-                  onTap: () {
-                    selectedPageNotifier.value = 2;
-                  },
-                  child: Center(child: Text(AppStrings.homeRecentAll)),
-                );
-              },
-            ),
+            HomeRecentWidget(items: _recent),
           ],
         ),
       ),
