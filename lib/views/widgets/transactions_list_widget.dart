@@ -1,11 +1,13 @@
 import 'package:arrajewelry/constants/candy_colors.dart';
+import 'package:arrajewelry/models/transaction_model.dart';
 import 'package:arrajewelry/views/theme/text_styles.dart';
 import 'package:arrajewelry/views/widgets/pill_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionListWidget extends StatelessWidget {
-  final List<Map<String, dynamic>> items;
+  final List<TransactionModel> items;
+
   const TransactionListWidget({super.key, required this.items});
 
   @override
@@ -16,15 +18,40 @@ class TransactionListWidget extends StatelessWidget {
       itemCount: items.length,
       padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
       itemBuilder: (context, index) {
-        DateTime trxDate = DateTime.parse(items[index]['date']);
-        String formattedDate = DateFormat('MMM d, y').format(trxDate);
+        String formattedDate = DateFormat(
+          'MMM d, y',
+        ).format(items[index].trxDate);
 
         final idrFormat = NumberFormat.currency(
           locale: 'id_ID',
           symbol: 'Rp',
           decimalDigits: 0,
         );
-        String total = idrFormat.format(items[index]['total']);
+        String total = idrFormat.format(items[index].total);
+
+        List<Widget> pills = [];
+        if (items[index].isPaid && items[index].isFulfilled) {
+          pills.add(
+            PillWidget(text: 'OK', color: CandyColors.colors['green']!),
+          );
+          pills.add(SizedBox(width: 4));
+        } else {
+          if (!items[index].isPaid) {
+            pills.add(
+              PillWidget(text: 'Unpaid', color: CandyColors.colors['blue']!),
+            );
+            pills.add(SizedBox(width: 4));
+          }
+
+          if (!items[index].isFulfilled) {
+            pills.add(
+              PillWidget(
+                text: 'Unfulfilled',
+                color: CandyColors.colors['purple']!,
+              ),
+            );
+          }
+        }
 
         return Card(
           // padding: EdgeInsets.symmetric(vertical: 8),
@@ -41,7 +68,7 @@ class TransactionListWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppText.bold('Order #${items[index]['order_no']}'),
+                          AppText.bold('Trx #${items[index].orderNo}'),
                           AppText.smallDate(formattedDate),
                         ],
                       ),
@@ -54,22 +81,7 @@ class TransactionListWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    PillWidget(
-                      text: 'Unfulfilled',
-                      color: CandyColors.colors['purple']!,
-                    ),
-                    SizedBox(width: 4),
-                    PillWidget(
-                      text: 'Unpaid',
-                      color: CandyColors.colors['blue']!,
-                    ),
-                    SizedBox(width: 4),
-                    PillWidget(text: 'OK', color: CandyColors.colors['green']!),
-                  ],
-                ),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: pills),
               ],
             ),
           ),
