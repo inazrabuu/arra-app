@@ -95,7 +95,10 @@ class TransactionListWidget extends StatelessWidget {
                     Expanded(
                       child: Row(
                         children: [
-                          Icon(Icons.subdirectory_arrow_right_rounded),
+                          Icon(
+                            Icons.subdirectory_arrow_right_rounded,
+                            size: 14,
+                          ),
                           Text(items[index].description),
                         ],
                       ),
