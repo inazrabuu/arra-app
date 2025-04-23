@@ -1,0 +1,29 @@
+import 'package:arrajewelry/models/transaction_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class TransactionService {
+  final SupabaseClient _client = Supabase.instance.client;
+
+  Future<List<TransactionModel>> fetchAll() async {
+    final response = await _client
+        .from(TransactionModel.tableName)
+        .select()
+        .order('trx_date', ascending: false)
+        .limit(100);
+
+    return (response as List)
+        .map((json) => TransactionModel.fromJson(json))
+        .toList();
+  }
+
+  Future<int> countUns(String what) async {
+    String field = 'is_$what';
+
+    final response = await _client
+        .from(TransactionModel.tableName)
+        .select('id', const FetchOptions(count: CountOption.exact))
+        .eq(field, false);
+
+    return response.count;
+  }
+}
