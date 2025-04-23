@@ -28,7 +28,7 @@ class HomeStatusSnapshotWidget extends StatelessWidget {
           StatusBadgeWidget(
             title: '',
             text: Helpers.numberFormat(balance),
-            color: 2,
+            color: balance > 0 ? 2 : 3,
             size: 2,
           ),
           Row(
