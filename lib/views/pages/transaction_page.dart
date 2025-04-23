@@ -1,14 +1,47 @@
 import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/data/dummies.dart';
+import 'package:arrajewelry/models/transaction_model.dart';
+import 'package:arrajewelry/services/transaction_service.dart';
 import 'package:arrajewelry/views/theme/text_styles.dart';
 import 'package:arrajewelry/views/widgets/status_badge_widget.dart';
 import 'package:arrajewelry/views/widgets/transactions_list_widget.dart';
 import 'package:flutter/material.dart';
 
-class TransactionPage extends StatelessWidget {
+class TransactionPage extends StatefulWidget {
   static final List<Map<String, dynamic>> items = DataDummies.transactions;
 
   const TransactionPage({super.key});
+
+  @override
+  State<TransactionPage> createState() => _TransactionPageState();
+}
+
+class _TransactionPageState extends State<TransactionPage> {
+  final TransactionService transactionService = TransactionService();
+  List<TransactionModel> _transactions = [];
+  int _unpaid = 0;
+  int _unfulfilled = 0;
+
+  @override
+  initState() {
+    super.initState();
+    countUns();
+    loadTransactions();
+  }
+
+  loadTransactions() async {
+    final data = await transactionService.fetchAll();
+    setState(() => _transactions = data);
+  }
+
+  countUns() async {
+    int cp = await transactionService.countUns('paid');
+    int cf = await transactionService.countUns('fulfilled');
+    setState(() {
+      _unpaid = cp;
+      _unfulfilled = cf;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +55,15 @@ class TransactionPage extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: StatusBadgeWidget(title: AppStrings.unpaid, text: '2'),
+                child: StatusBadgeWidget(
+                  title: AppStrings.unpaid,
+                  text: _unpaid.toString(),
+                ),
               ),
               Expanded(
                 child: StatusBadgeWidget(
                   title: AppStrings.unfulfilled,
-                  text: '5',
+                  text: _unfulfilled.toString(),
                   color: 1,
                 ),
               ),
@@ -40,7 +76,7 @@ class TransactionPage extends StatelessWidget {
               color: Colors.grey[700],
             ),
           ),
-          TransactionListWidget(items: items),
+          TransactionListWidget(items: TransactionPage.items),
         ],
       ),
     );
