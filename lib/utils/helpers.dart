@@ -9,4 +9,8 @@ class Helpers {
     );
     return idrFormat.format(price);
   }
+
+  static String numberFormat(double number) {
+    return NumberFormat.decimalPattern('de').format(number);
+  }
 }
