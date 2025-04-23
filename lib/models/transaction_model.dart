@@ -37,7 +37,7 @@ class TransactionModel {
     return TransactionModel(
       id: json['id'],
       createdAt: DateTime.parse(json['created_at']),
-      orderNo: json['id'].toString().padLeft(5, '0'),
+      orderNo: json['id'].toString().padLeft(7, '0'),
       name: json['name'],
       description: json['description'],
       total:
