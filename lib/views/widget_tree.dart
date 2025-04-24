@@ -26,7 +26,22 @@ class WidgetTree extends StatelessWidget {
           style: TextStyle(fontFamily: 'Poppins', fontSize: 24),
         ),
         centerTitle: false,
-        actions: [IconButton(icon: const Icon(Icons.menu), onPressed: () {})],
+        actions: [
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+              );
+            },
+          ),
+        ],
+      ),
+      endDrawer: Drawer(
+        backgroundColor: Colors.white,
+        child: Center(child: Text('More to come 👍')),
       ),
       body: ValueListenableBuilder(
         valueListenable: selectedPageNotifier,
