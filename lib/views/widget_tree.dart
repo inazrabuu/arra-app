@@ -50,6 +50,29 @@ class WidgetTree extends StatelessWidget {
         },
       ),
       bottomNavigationBar: const NavbarWidget(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Add Transaction'),
+                content: Text('This is to add a transaction.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('Close'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        backgroundColor: Colors.lightBlue,
+        shape: CircleBorder(),
+        child: Icon(Icons.add_rounded, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
