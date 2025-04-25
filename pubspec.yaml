@@ -30,8 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  basic_utils: ^5.8.2
-  http: ^0.13.6
+  basic_utils: ^5.5.4
   shared_preferences: ^2.2.0
   flutter_svg: ^2.0.7
   intl: ^0.18.1
