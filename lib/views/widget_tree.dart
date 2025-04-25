@@ -2,6 +2,7 @@ import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/data/notifiers.dart';
 import 'package:arrajewelry/views/pages/home_page.dart';
 import 'package:arrajewelry/views/pages/product_page.dart';
+import 'package:arrajewelry/views/pages/transaction_add_page.dart';
 import 'package:arrajewelry/views/pages/transaction_page.dart';
 import 'package:arrajewelry/views/widgets/navbar_widget.dart';
 import 'package:flutter/material.dart';
@@ -52,20 +53,19 @@ class WidgetTree extends StatelessWidget {
       bottomNavigationBar: const NavbarWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('Add Transaction'),
-                content: Text('This is to add a transaction.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text('Close'),
-                  ),
-                ],
-              );
-            },
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (_, _, _) => const TransactionAddPage(),
+              transitionsBuilder: (context, animation, _, child) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 1),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            ),
           );
         },
         backgroundColor: Colors.lightBlue,
