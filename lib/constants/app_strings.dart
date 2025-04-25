@@ -13,6 +13,7 @@ class AppStrings {
   static const productPageTitle = 'Products';
   static const transactionPageTitle = 'Transactions';
   static const transactionPageHistory = 'History';
+  static const transactionAddPageTitle = 'Add Transaction';
   static const unfulfilled = 'Unfulfilled';
   static const unpaid = 'Unpaid';
   static const greetingMorning = 'Good Morning';
