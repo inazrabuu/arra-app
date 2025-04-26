@@ -1,5 +1,5 @@
 import 'package:arrajewelry/constants/app_strings.dart';
-import 'package:arrajewelry/views/theme/text_styles.dart';
+import 'package:arrajewelry/data/notifiers.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_fieldset.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_trxdate_widget.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +30,8 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
 
     setState(() => _isLoading = true);
     await Future.delayed(Duration(seconds: 2));
+
+    getFormData();
     // clear & reset form fields
     _formKey.currentState!.reset();
     _trxDateController.text = DateTime.now().toString();
@@ -45,6 +47,26 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
         margin: EdgeInsets.only(bottom: 400),
       ),
     );
+  }
+
+  void getFormData() {
+    print(_trxDateController.text);
+    print(_nameController.text);
+    print(_descriptionController.text);
+    print(_totalController.text);
+    print(_isDebit);
+    print(_isFulfilled);
+    print(_isPaid);
+    for (var row in detailsControllersNotifier.value) {
+      for (var item in row) {
+        if (item is TextEditingController) {
+          print(item.text);
+        } else {
+          print(item);
+          // print(item.currentState?.selectedItem);
+        }
+      }
+    }
   }
 
   @override
@@ -95,7 +117,10 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                       Switch(
                         value: _isDebit,
                         onChanged: (value) {
-                          setState(() => _isDebit = value);
+                          setState(() {
+                            detailsControllersNotifier.value = [];
+                            _isDebit = value;
+                          });
                         },
                       ),
                     ],
@@ -172,7 +197,12 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                     ],
                   ),
                 ),
-                TransactionAddFieldset(),
+                ValueListenableBuilder(
+                  valueListenable: detailsControllersNotifier,
+                  builder: (context, detailsControllers, child) {
+                    return TransactionAddFieldset(isDebit: _isDebit);
+                  },
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                   child: SizedBox(
