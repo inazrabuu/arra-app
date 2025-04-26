@@ -1,28 +1,50 @@
+import 'package:arrajewelry/data/app_data.dart';
+import 'package:arrajewelry/data/notifiers.dart';
+import 'package:arrajewelry/models/product_model.dart';
+import 'package:arrajewelry/views/widgets/image_cloud.dart';
 import 'package:arrajewelry/views/widgets/products_dropdown_widget.dart';
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class TransactionAddFieldset extends StatefulWidget {
-  const TransactionAddFieldset({super.key});
+  final bool isDebit;
+  const TransactionAddFieldset({super.key, required this.isDebit});
 
   @override
   State<TransactionAddFieldset> createState() => _TransactionAddFieldsetState();
 }
 
 class _TransactionAddFieldsetState extends State<TransactionAddFieldset> {
-  final List<List<dynamic>> _controllers = [
-    [ProductDropdownWidget(), TextEditingController()],
-  ];
+  List<ProductModel> _products = [];
 
   void _addField() {
-    setState(
-      () =>
-          _controllers.add([ProductDropdownWidget(), TextEditingController()]),
-    );
+    dynamic item;
+
+    Map<String, dynamic> dropdown = {
+      'selectedItem': _products[0].getNamePrice(),
+    };
+
+    if (!widget.isDebit) {
+      item = dropdown;
+    } else {
+      item = TextEditingController();
+    }
+
+    setState(() {
+      detailsControllersNotifier.value.add([item, TextEditingController()]);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _products = AppData().products!;
   }
 
   @override
   void dispose() {
-    for (final c in _controllers) {
+    for (final c in detailsControllersNotifier.value) {
       c[1].dispose();
     }
 
@@ -50,10 +72,57 @@ class _TransactionAddFieldsetState extends State<TransactionAddFieldset> {
               ),
             ),
             SizedBox(height: 8),
-            ..._controllers.asMap().entries.map((entry) {
+            ...detailsControllersNotifier.value.asMap().entries.map((entry) {
               return Row(
                 children: [
-                  Expanded(flex: 7, child: entry.value[0]),
+                  Expanded(
+                    flex: 7,
+                    child:
+                        !widget.isDebit
+                            ? DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 0,
+                                  vertical: 16,
+                                ),
+                              ),
+                              value: entry.value[0]['selectedItem'],
+                              items:
+                                  _products.map((i) {
+                                    return DropdownMenuItem<String>(
+                                      value: i.getNamePrice(),
+                                      child: Row(
+                                        children: [
+                                          ImageCloud(
+                                            path:
+                                                '${dotenv.env['BUCKET_PRODUCT']}/${i.image}',
+                                            bucket:
+                                                dotenv.env['SUPABASE_BUCKET']!,
+                                            width: 50,
+                                            height: 50,
+                                          ),
+                                          SizedBox(width: 10),
+                                          Text(
+                                            StringUtils.capitalize(
+                                              i.name,
+                                              allWords: true,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                              onChanged: (value) {
+                                setState(
+                                  () => entry.value[0]['selectedItem'] = value,
+                                );
+                              },
+                            )
+                            : TextFormField(
+                              controller: entry.value[0],
+                              decoration: InputDecoration(labelText: 'Item'),
+                            ),
+                  ),
                   SizedBox(width: 10),
                   Expanded(
                     flex: 2,
