@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 class TransactionModel {
-  final int id;
-  final DateTime createdAt;
+  final int? id;
+  final DateTime? createdAt;
   final String orderNo;
   final String name;
   final String description;
@@ -16,8 +16,8 @@ class TransactionModel {
   static String tableName = 'transactions';
 
   TransactionModel({
-    required this.id,
-    required this.createdAt,
+    this.id,
+    this.createdAt,
     required this.orderNo,
     required this.name,
     required this.description,
@@ -29,8 +29,22 @@ class TransactionModel {
     required this.isDebit,
   });
 
+  Map<String, dynamic> toJson() => {
+    if (id != null) 'id': id,
+    if (createdAt != null) 'created_at': createdAt!.toIso8601String(),
+    'order_no': '',
+    'name': name,
+    'description': description,
+    'total': total,
+    'is_paid': isPaid,
+    'is_fulfilled': isFulfilled,
+    'detail': detail,
+    'trx_date': trxDate.toIso8601String(),
+    'is_debit': isDebit,
+  };
+
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
-    List<dynamic> data = jsonDecode(json['detail']);
+    List<dynamic> data = json['detail'];
     List<Map<String, dynamic>> detail =
         data.map((item) => Map<String, dynamic>.from(item)).toList();
 

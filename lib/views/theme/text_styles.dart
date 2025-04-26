@@ -31,28 +31,55 @@ class AppText {
     );
   }
 
-  static Widget xtra(String text, {Color? color}) {
+  static Widget xtra(
+    String text, {
+    Color? color,
+    String? fontFamily,
+    double? letterSpacing,
+  }) {
     return Text(
       text,
       style: TextStyle(
         fontSize: 30,
         fontWeight: FontWeight.w700,
         color: color ?? Colors.black,
+        fontFamily: fontFamily ?? "SF Pro Display",
+        letterSpacing: letterSpacing ?? 0,
       ),
     );
   }
 
-  static Widget gridTitle(String text, {Color? color}) {
-    return Text(text, style: TextStyle(fontSize: 16));
+  static Widget gridTitle(
+    String text, {
+    Color? color,
+    String? fontFamily,
+    double? letterSpacing,
+  }) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 16,
+        color: color ?? Colors.black,
+        fontFamily: fontFamily ?? "SF Pro Display",
+        letterSpacing: letterSpacing ?? 0,
+      ),
+    );
   }
 
-  static Widget gridPrice(String text, {Color? color}) {
+  static Widget gridPrice(
+    String text, {
+    Color? color,
+    String? fontFamily,
+    double? letterSpacing,
+  }) {
     return Text(
       text,
       style: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: color ?? Colors.black,
+        fontFamily: fontFamily ?? "SF Pro Display",
+        letterSpacing: letterSpacing ?? 0,
       ),
     );
   }

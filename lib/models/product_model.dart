@@ -40,4 +40,8 @@ class ProductModel {
       stock: json['stock'],
     );
   }
+
+  String getNamePrice({String delimiter = '_'}) {
+    return '$name$delimiter${price.toString()}';
+  }
 }

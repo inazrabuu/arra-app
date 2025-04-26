@@ -1,3 +1,4 @@
+import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/models/transaction_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -32,5 +33,19 @@ class TransactionService {
     final int sumCredits = await _client.rpc('sum_transaction_credits');
 
     return (sumCredits - sumDebits).toDouble();
+  }
+
+  Future<String> save(TransactionModel transaction) async {
+    final response = await _client
+        .from(TransactionModel.tableName)
+        .upsert(transaction.toJson());
+
+    if (response != null) {
+      if (response.error != null) {
+        throw Exception('Failed to save: ${response.error!.message}');
+      }
+    }
+
+    return AppStrings.success;
   }
 }

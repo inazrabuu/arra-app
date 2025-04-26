@@ -2,6 +2,7 @@ import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/data/notifiers.dart';
 import 'package:arrajewelry/views/pages/home_page.dart';
 import 'package:arrajewelry/views/pages/product_page.dart';
+import 'package:arrajewelry/views/pages/transaction_add_page.dart';
 import 'package:arrajewelry/views/pages/transaction_page.dart';
 import 'package:arrajewelry/views/widgets/navbar_widget.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,22 @@ class WidgetTree extends StatelessWidget {
           style: TextStyle(fontFamily: 'Poppins', fontSize: 24),
         ),
         centerTitle: false,
-        actions: [IconButton(icon: const Icon(Icons.menu), onPressed: () {})],
+        actions: [
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+              );
+            },
+          ),
+        ],
+      ),
+      endDrawer: Drawer(
+        backgroundColor: Colors.white,
+        child: Center(child: Text('More to come 👍')),
       ),
       body: ValueListenableBuilder(
         valueListenable: selectedPageNotifier,
@@ -35,6 +51,28 @@ class WidgetTree extends StatelessWidget {
         },
       ),
       bottomNavigationBar: const NavbarWidget(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (_, _, _) => const TransactionAddPage(),
+              transitionsBuilder: (context, animation, _, child) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 1),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            ),
+          );
+        },
+        backgroundColor: Colors.lightBlue,
+        shape: CircleBorder(),
+        child: Icon(Icons.add_rounded, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
