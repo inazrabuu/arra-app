@@ -57,7 +57,7 @@ class _TransactionAddTrxdateWidgetState
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16),
-      child: TextField(
+      child: TextFormField(
         controller: widget.trxDateController,
         readOnly: true,
         decoration: InputDecoration(
@@ -65,6 +65,11 @@ class _TransactionAddTrxdateWidgetState
           suffixIcon: Icon(Icons.calendar_today),
         ),
         onTap: _selectDateTime,
+        validator:
+            (value) =>
+                value == null || value.isEmpty
+                    ? "Enter the Transaction Date"
+                    : null,
       ),
     );
   }
