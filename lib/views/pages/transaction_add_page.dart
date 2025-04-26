@@ -1,5 +1,6 @@
 import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/views/theme/text_styles.dart';
+import 'package:arrajewelry/views/widgets/transaction_add_fieldset.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_trxdate_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -25,9 +26,25 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   bool _isLoading = false;
 
   Future<void> submitForm() async {
+    if (!_formKey.currentState!.validate()) return;
+
     setState(() => _isLoading = true);
     await Future.delayed(Duration(seconds: 2));
+    // clear & reset form fields
+    _formKey.currentState!.reset();
+    _trxDateController.text = DateTime.now().toString();
+    _nameController.clear();
+    _descriptionController.clear();
+    _totalController.text = '0';
     setState(() => _isLoading = false);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text("Transaction added successfully!"),
+        margin: EdgeInsets.only(bottom: 400),
+      ),
+    );
   }
 
   @override
@@ -56,169 +73,146 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
           style: TextStyle(fontFamily: "Poppins"),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(8),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TransactionAddTrxdateWidget(
-                trxDateController: _trxDateController,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 4.0,
-                  horizontal: 16.0,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TransactionAddTrxdateWidget(
+                  trxDateController: _trxDateController,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Debit?'),
-                    Switch(
-                      value: _isDebit,
-                      onChanged: (value) {
-                        setState(() => _isDebit = value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 0.0,
-                  horizontal: 16.0,
-                ),
-                child: TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                  validator:
-                      (value) =>
-                          value == null || value.isEmpty
-                              ? "Enter the name"
-                              : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 4.0,
-                  horizontal: 16.0,
-                ),
-                child: TextFormField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(labelText: 'Description'),
-                  validator:
-                      (value) =>
-                          value == null || value.isEmpty
-                              ? "Enter the Description"
-                              : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 4.0,
-                  horizontal: 16.0,
-                ),
-                child: TextFormField(
-                  controller: _totalController,
-                  decoration: const InputDecoration(labelText: 'Total'),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    final t = int.tryParse(value ?? '');
-                    if (t! < 0) return "Enter valid total";
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 4,
-                  horizontal: 16,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Paid?'),
-                    Switch(
-                      value: _isPaid,
-                      onChanged: (value) {
-                        setState(() => _isPaid = value);
-                      },
-                    ),
-                    Text('Fulfilled?'),
-                    Switch(
-                      value: _isFulfilled,
-                      onChanged: (value) {
-                        setState(() => _isFulfilled = value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 0,
-                  horizontal: 16,
-                ),
-                child: Row(children: [Text('Details')]),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 8,
-                      child: TextFormField(
-                        controller: TextEditingController(),
-                        decoration: InputDecoration(labelText: 'Item'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4.0,
+                    horizontal: 16.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Debit?'),
+                      Switch(
+                        value: _isDebit,
+                        onChanged: (value) {
+                          setState(() => _isDebit = value);
+                        },
                       ),
-                    ),
-                    SizedBox(width: 5),
-                    Expanded(
-                      flex: 2,
-                      child: TextFormField(
-                        controller: TextEditingController(),
-                        decoration: InputDecoration(labelText: 'Item'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.add_rounded),
-                    label: Text('Add Item'),
+                    ],
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                child: SizedBox(
-                  width: double.infinity, // makes the button take full width
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      // your action here
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 0.0,
+                    horizontal: 16.0,
+                  ),
+                  child: TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(labelText: 'Name'),
+                    validator:
+                        (value) =>
+                            value == null || value.isEmpty
+                                ? "Enter the name"
+                                : null,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4.0,
+                    horizontal: 16.0,
+                  ),
+                  child: TextFormField(
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(labelText: 'Description'),
+                    validator:
+                        (value) =>
+                            value == null || value.isEmpty
+                                ? "Enter the Description"
+                                : null,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4.0,
+                    horizontal: 16.0,
+                  ),
+                  child: TextFormField(
+                    controller: _totalController,
+                    decoration: const InputDecoration(labelText: 'Total'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      final t = int.tryParse(value ?? '');
+                      if (t! <= 0) return "Enter valid total";
+                      return null;
                     },
-                    icon: Icon(Icons.send), // replace with your desired icon
-                    label: Text('Send'), // replace with your label
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal, // button background color
-                      foregroundColor: Colors.white, // icon and text color
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      elevation: 4, // drop shadow
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          12,
-                        ), // rounded corners
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 16,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Paid?'),
+                      Switch(
+                        value: _isPaid,
+                        onChanged: (value) {
+                          setState(() => _isPaid = value);
+                        },
                       ),
+                      Text('Fulfilled?'),
+                      Switch(
+                        value: _isFulfilled,
+                        onChanged: (value) {
+                          setState(() => _isFulfilled = value);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                TransactionAddFieldset(),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _isLoading ? null : submitForm,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child:
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.upload_rounded),
+                                  SizedBox(
+                                    width: 8,
+                                  ), // spacing between icon and label
+                                  Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
                     ),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 64),
+              ],
+            ),
           ),
         ),
       ),
