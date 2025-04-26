@@ -14,9 +14,12 @@ class AppStrings {
   static const transactionPageTitle = 'Transactions';
   static const transactionPageHistory = 'History';
   static const transactionAddPageTitle = 'Add Transaction';
+  static const transactionAddSuccess = 'Transaction added succesfully';
+  static const transactionAddFail = 'Transaction failed';
   static const unfulfilled = 'Unfulfilled';
   static const unpaid = 'Unpaid';
   static const greetingMorning = 'Good Morning';
   static const greetingNoon = 'Good Day';
   static const greetingNight = 'Good Evening';
+  static const success = 'Sucess!';
 }
