@@ -23,7 +23,6 @@ class _TransactionAddFieldsetState extends State<TransactionAddFieldset> {
   @override
   void dispose() {
     for (final c in _controllers) {
-      c[0].dispose();
       c[1].dispose();
     }
 
