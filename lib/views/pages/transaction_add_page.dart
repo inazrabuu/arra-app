@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/data/notifiers.dart';
+import 'package:arrajewelry/models/transaction_model.dart';
+import 'package:arrajewelry/services/transaction_service.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_fieldset.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_trxdate_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class TransactionAddPage extends StatefulWidget {
   const TransactionAddPage({super.key});
@@ -12,6 +17,7 @@ class TransactionAddPage extends StatefulWidget {
 }
 
 class _TransactionAddPageState extends State<TransactionAddPage> {
+  final TransactionService transactionService = TransactionService();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -24,6 +30,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   bool _isFulfilled = false;
   bool _isDebit = false;
   bool _isLoading = false;
+  String toastMessage = AppStrings.transactionAddSuccess;
 
   Future<void> submitForm() async {
     if (!_formKey.currentState!.validate()) return;
@@ -31,42 +38,70 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     setState(() => _isLoading = true);
     await Future.delayed(Duration(seconds: 2));
 
-    getFormData();
-    // clear & reset form fields
-    _formKey.currentState!.reset();
-    _trxDateController.text = DateTime.now().toString();
-    _nameController.clear();
-    _descriptionController.clear();
-    _totalController.text = '0';
-    setState(() => _isLoading = false);
+    TransactionModel t = getFormData();
+    String res = await transactionService.save(t);
+
+    if (res != AppStrings.success) {
+      toastMessage = AppStrings.transactionAddFail;
+    }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
         behavior: SnackBarBehavior.floating,
-        content: Text("Transaction added successfully!"),
+        content: Text(toastMessage),
         margin: EdgeInsets.only(bottom: 400),
       ),
     );
+
+    setState(() => _isLoading = false);
   }
 
-  void getFormData() {
-    print(_trxDateController.text);
-    print(_nameController.text);
-    print(_descriptionController.text);
-    print(_totalController.text);
-    print(_isDebit);
-    print(_isFulfilled);
-    print(_isPaid);
+  TransactionModel getFormData() {
+    double total = 0;
+    List<Map<String, dynamic>> details = [];
     for (var row in detailsControllersNotifier.value) {
-      for (var item in row) {
-        if (item is TextEditingController) {
-          print(item.text);
+      String item = '';
+      int qty = 0;
+      double price = 0;
+      for (var e in row.asMap().entries) {
+        if (e.key == 0) {
+          if (e.value is TextEditingController) {
+            item = e.value.text;
+            price = 0;
+          } else {
+            List<String> splitted = e.value['selectedItem'].split('_');
+            item = splitted[0];
+            price = toDouble(splitted[1])!;
+          }
+          total += price;
         } else {
-          print(item);
-          // print(item.currentState?.selectedItem);
+          qty = toInt(e.value.text)!;
         }
       }
+      details.add({'item': item, 'price': price, 'qty': qty});
     }
+
+    void clearForm() {
+      // clear & reset form fields
+      _formKey.currentState!.reset();
+      _trxDateController.text = DateTime.now().toString();
+      _nameController.clear();
+      _descriptionController.clear();
+      _totalController.text = '0';
+      detailsControllersNotifier.value = [];
+    }
+
+    return TransactionModel(
+      orderNo: '',
+      name: _nameController.text,
+      description: _descriptionController.text,
+      total: total,
+      isPaid: _isPaid,
+      isFulfilled: _isFulfilled,
+      detail: details,
+      trxDate: DateTime.parse(_trxDateController.text),
+      isDebit: _isDebit,
+    );
   }
 
   @override
