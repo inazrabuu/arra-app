@@ -50,7 +50,9 @@ class _TransactionAddTrxdateWidgetState
   @override
   void initState() {
     super.initState();
-    widget.trxDateController.text = _selectedDateTime.toString();
+    if (widget.trxDateController.text == '') {
+      widget.trxDateController.text = _selectedDateTime.toString();
+    }
   }
 
   @override

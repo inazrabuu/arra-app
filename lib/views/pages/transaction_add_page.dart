@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class TransactionAddPage extends StatefulWidget {
-  const TransactionAddPage({super.key});
+  final TransactionModel? transaction;
+
+  const TransactionAddPage({super.key, this.transaction});
 
   @override
   State<TransactionAddPage> createState() => _TransactionAddPageState();
@@ -26,6 +28,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   );
 
   final TextEditingController _trxDateController = TextEditingController();
+
+  int? _id;
+  DateTime? _createdAt;
   bool _isPaid = false;
   bool _isFulfilled = false;
   bool _isDebit = false;
@@ -90,6 +95,8 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     }
 
     return TransactionModel(
+      id: widget.transaction != null ? _id : null,
+      createdAt: widget.transaction != null ? _createdAt : null,
       orderNo: '',
       name: _nameController.text,
       description: _descriptionController.text,
@@ -123,6 +130,29 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
 
   @override
   void initState() {
+    if (widget.transaction != null) {
+      _id = widget.transaction!.id;
+      _createdAt = widget.transaction!.createdAt;
+      _trxDateController.text = widget.transaction!.trxDate.toString();
+      _nameController.text = widget.transaction!.name;
+      _descriptionController.text = widget.transaction!.description;
+      _totalController.text = widget.transaction!.total.toString();
+      _isPaid = widget.transaction!.isPaid;
+      _isFulfilled = widget.transaction!.isFulfilled;
+      _isDebit = widget.transaction!.isDebit;
+      widget.transaction!.detail.map((i) {
+        dynamic item =
+            _isDebit
+                ? TextEditingController(text: i['item'])
+                : {'selectedItem': i['item']};
+
+        detailsControllersNotifier.value.add([
+          item,
+          TextEditingController(text: i['qty'].toString()),
+        ]);
+      }).toList();
+    }
+
     super.initState();
   }
 
@@ -135,7 +165,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          AppStrings.transactionAddPageTitle,
+          widget.transaction == null
+              ? AppStrings.transactionAddPageTitle
+              : AppStrings.transactionEditPageTitle,
           style: TextStyle(fontFamily: "Poppins"),
         ),
       ),
