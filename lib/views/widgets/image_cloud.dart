@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -42,8 +43,8 @@ class ImageCloud extends StatelessWidget {
           return errorWidget ??
               Icon(Icons.broken_image_rounded, color: Colors.grey);
         } else {
-          return Image.network(
-            snapshot.data!,
+          return CachedNetworkImage(
+            imageUrl: snapshot.data!,
             width: width,
             height: height,
             fit: fit,

@@ -32,7 +32,10 @@ class _TransactionAddFieldsetState extends State<TransactionAddFieldset> {
     }
 
     setState(() {
-      detailsControllersNotifier.value.add([item, TextEditingController()]);
+      detailsControllersNotifier.value.add([
+        item,
+        TextEditingController(text: '1'),
+      ]);
     });
   }
 
