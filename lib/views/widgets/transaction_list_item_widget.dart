@@ -2,7 +2,9 @@ import 'package:arrajewelry/constants/candy_colors.dart';
 import 'package:arrajewelry/models/transaction_model.dart';
 import 'package:arrajewelry/views/theme/text_styles.dart';
 import 'package:arrajewelry/views/widgets/pill_widget.dart';
+import 'package:arrajewelry/views/widgets/transaction_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 class TransactionListItemWidget extends StatelessWidget {
@@ -43,56 +45,100 @@ class TransactionListItemWidget extends StatelessWidget {
         transaction.isDebit
             ? Icon(Icons.arrow_left_rounded, color: Colors.red)
             : Icon(Icons.arrow_right_rounded, color: Colors.green);
-    return Card(
-      // padding: EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
+    return Slidable(
+      key: ValueKey(transaction.id),
+      startActionPane: ActionPane(
+        motion: const DrawerMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (context) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('Edit ${transaction.id}')));
+            },
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            icon: Icons.edit_rounded,
+            label: 'Edit',
+          ),
+          SlidableAction(
+            onPressed: (context) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Delete ${transaction.id} ?')),
+              );
+            },
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+            icon: Icons.delete_rounded,
+            label: 'Delete',
+          ),
+        ],
+      ),
+      child: Card(
+        // padding: EdgeInsets.symmetric(vertical: 8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: InkWell(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: false, // if you want full screen
+              builder:
+                  (context) =>
+                      TransactionDetailWidget(transaction: transaction),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          arrow,
-                          AppText.bold('Trx #${transaction.orderNo}'),
+                          Row(
+                            children: [
+                              arrow,
+                              AppText.bold('Trx #${transaction.orderNo}'),
+                            ],
+                          ),
+                          AppText.smallDate(formattedDate),
                         ],
                       ),
-                      AppText.smallDate(formattedDate),
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [AppText.gridPrice(total)],
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [AppText.gridPrice(total)],
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.subdirectory_arrow_right_rounded,
+                            size: 14,
+                          ),
+                          Text(transaction.description),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: pills,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Icon(Icons.subdirectory_arrow_right_rounded, size: 14),
-                      Text(transaction.description),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: pills,
-                  ),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );
