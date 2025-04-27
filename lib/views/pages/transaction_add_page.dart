@@ -45,6 +45,8 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
       toastMessage = AppStrings.transactionAddFail;
     }
 
+    clearForm();
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -54,6 +56,8 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     );
 
     setState(() => _isLoading = false);
+
+    Navigator.of(context).pop();
   }
 
   TransactionModel getFormData() {
@@ -73,29 +77,23 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
             item = splitted[0];
             price = toDouble(splitted[1])!;
           }
-          total += price;
         } else {
           qty = toInt(e.value.text)!;
+          price = price * qty.toDouble();
+
+          if (!_isDebit) {
+            total += price;
+          }
         }
       }
       details.add({'item': item, 'price': price, 'qty': qty});
-    }
-
-    void clearForm() {
-      // clear & reset form fields
-      _formKey.currentState!.reset();
-      _trxDateController.text = DateTime.now().toString();
-      _nameController.clear();
-      _descriptionController.clear();
-      _totalController.text = '0';
-      detailsControllersNotifier.value = [];
     }
 
     return TransactionModel(
       orderNo: '',
       name: _nameController.text,
       description: _descriptionController.text,
-      total: total,
+      total: _isDebit ? toDouble(_totalController.text)! : total,
       isPaid: _isPaid,
       isFulfilled: _isFulfilled,
       detail: details,
@@ -104,11 +102,22 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     );
   }
 
+  void clearForm() {
+    // clear & reset form fields
+    _formKey.currentState!.reset();
+    _trxDateController.text = DateTime.now().toString();
+    _nameController.clear();
+    _descriptionController.clear();
+    _totalController.text = '0';
+    detailsControllersNotifier.value = [];
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
     _trxDateController.dispose();
+    detailsControllersNotifier.value = [];
     super.dispose();
   }
 
