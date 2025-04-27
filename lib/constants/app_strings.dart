@@ -14,6 +14,7 @@ class AppStrings {
   static const transactionPageTitle = 'Transactions';
   static const transactionPageHistory = 'History';
   static const transactionAddPageTitle = 'Add Transaction';
+  static const transactionEditPageTitle = 'Edit Transaction';
   static const transactionAddSuccess = 'Transaction added succesfully';
   static const transactionAddFail = 'Transaction failed';
   static const unfulfilled = 'Unfulfilled';
