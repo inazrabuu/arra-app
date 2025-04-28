@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 
 class TransactionListWidget extends StatelessWidget {
   final List<TransactionModel> items;
+  final Function deleteData;
 
-  const TransactionListWidget({super.key, required this.items});
+  const TransactionListWidget({
+    super.key,
+    required this.items,
+    required this.deleteData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,10 @@ class TransactionListWidget extends StatelessWidget {
       itemCount: items.length,
       padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
       itemBuilder: (context, index) {
-        return TransactionListItemWidget(transaction: items[index]);
+        return TransactionListItemWidget(
+          transaction: items[index],
+          deleteData: deleteData,
+        );
       },
     );
   }
