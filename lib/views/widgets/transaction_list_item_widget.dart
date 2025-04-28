@@ -1,5 +1,6 @@
 import 'package:arrajewelry/constants/candy_colors.dart';
 import 'package:arrajewelry/models/transaction_model.dart';
+import 'package:arrajewelry/views/pages/transaction_add_page.dart';
 import 'package:arrajewelry/views/theme/text_styles.dart';
 import 'package:arrajewelry/views/widgets/pill_widget.dart';
 import 'package:arrajewelry/views/widgets/transaction_detail.dart';
@@ -52,9 +53,21 @@ class TransactionListItemWidget extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (context) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text('Edit ${transaction.id}')));
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder:
+                      (_, _, _) => TransactionAddPage(transaction: transaction),
+                  transitionsBuilder: (context, animation, _, child) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 1),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    );
+                  },
+                ),
+              );
             },
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
