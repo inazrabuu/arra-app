@@ -10,7 +10,13 @@ import 'package:intl/intl.dart';
 
 class TransactionListItemWidget extends StatelessWidget {
   final TransactionModel transaction;
-  const TransactionListItemWidget({super.key, required this.transaction});
+  final Function deleteData;
+
+  const TransactionListItemWidget({
+    super.key,
+    required this.transaction,
+    required this.deleteData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +82,35 @@ class TransactionListItemWidget extends StatelessWidget {
           ),
           SlidableAction(
             onPressed: (context) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Delete ${transaction.id} ?')),
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Confirm Delete.'),
+                    content: Text(
+                      'Delete transaction #${transaction.orderNo}?',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          deleteData(transaction.id);
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: Text('Yes'),
+                      ),
+                    ],
+                  );
+                },
               );
             },
             backgroundColor: Colors.red,
