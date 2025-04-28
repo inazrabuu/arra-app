@@ -124,7 +124,7 @@ class TransactionListItemWidget extends StatelessWidget {
                             Icons.subdirectory_arrow_right_rounded,
                             size: 14,
                           ),
-                          Text(transaction.description),
+                          Text(transaction.name),
                         ],
                       ),
                     ),
