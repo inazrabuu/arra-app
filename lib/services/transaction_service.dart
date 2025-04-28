@@ -17,6 +17,22 @@ class TransactionService {
         .toList();
   }
 
+  Future<TransactionModel> getById(int id) async {
+    TransactionModel t = TransactionModel.empty();
+    final response =
+        await _client
+            .from(TransactionModel.tableName)
+            .select()
+            .eq('id', id)
+            .maybeSingle();
+
+    if (response != null) {
+      t = TransactionModel.fromJson(response);
+    }
+
+    return t;
+  }
+
   Future<int> countUns(String what) async {
     String field = 'is_$what';
 
@@ -47,5 +63,9 @@ class TransactionService {
     }
 
     return AppStrings.success;
+  }
+
+  void delete(int id) {
+    null;
   }
 }
