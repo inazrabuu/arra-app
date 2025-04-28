@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class TransactionModel {
   final int? id;
   final DateTime? createdAt;
@@ -42,6 +40,22 @@ class TransactionModel {
     'trx_date': trxDate.toIso8601String(),
     'is_debit': isDebit,
   };
+
+  factory TransactionModel.empty() {
+    return TransactionModel(
+      id: 0,
+      createdAt: DateTime.parse('1900-01-01 00:00:00'),
+      orderNo: '',
+      name: '',
+      description: '',
+      detail: [],
+      isDebit: false,
+      isPaid: false,
+      isFulfilled: false,
+      total: 0,
+      trxDate: DateTime.parse('1900-01-01 00:00:00'),
+    );
+  }
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     List<dynamic> data = json['detail'];
