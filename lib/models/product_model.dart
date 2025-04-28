@@ -9,6 +9,7 @@ class ProductModel {
   final bool inShopee;
   final int stock;
   String? sku;
+  String? namePrice;
   static String tableName = 'products';
 
   ProductModel({
@@ -22,6 +23,7 @@ class ProductModel {
     required this.inShopee,
     required this.stock,
     this.sku,
+    this.namePrice,
   });
 
   factory ProductModel.empty() {
