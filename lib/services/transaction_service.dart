@@ -65,7 +65,12 @@ class TransactionService {
     return AppStrings.success;
   }
 
-  void delete(int id) {
-    null;
+  dynamic delete(int id) async {
+    final response = await _client
+        .from(TransactionModel.tableName)
+        .delete()
+        .eq('id', id);
+
+    return response;
   }
 }
