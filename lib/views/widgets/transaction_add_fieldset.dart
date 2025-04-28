@@ -115,7 +115,6 @@ class _TransactionAddFieldsetState extends State<TransactionAddFieldset> {
                                     );
                                   }).toList(),
                               onChanged: (value) {
-                                print(value);
                                 setState(
                                   () => entry.value[0]['selectedItem'] = value,
                                 );
