@@ -1,6 +1,8 @@
 import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/data/notifiers.dart';
+import 'package:arrajewelry/models/product_model.dart';
 import 'package:arrajewelry/models/transaction_model.dart';
+import 'package:arrajewelry/services/product_service.dart';
 import 'package:arrajewelry/services/transaction_service.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_fieldset.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_trxdate_widget.dart';
@@ -17,6 +19,7 @@ class TransactionAddPage extends StatefulWidget {
 }
 
 class _TransactionAddPageState extends State<TransactionAddPage> {
+  final ProductService productService = ProductService();
   final TransactionService transactionService = TransactionService();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
@@ -134,20 +137,28 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
       _trxDateController.text = widget.transaction!.trxDate.toString();
       _nameController.text = widget.transaction!.name;
       _descriptionController.text = widget.transaction!.description;
-      _totalController.text = widget.transaction!.total.toString();
+      _totalController.text = widget.transaction!.total.toStringAsFixed(0);
       _isPaid = widget.transaction!.isPaid;
       _isFulfilled = widget.transaction!.isFulfilled;
       _isDebit = widget.transaction!.isDebit;
-      widget.transaction!.detail.map((i) {
-        dynamic item =
-            _isDebit
-                ? TextEditingController(text: i['item'])
-                : {'selectedItem': i['item']};
+      widget.transaction!.detail.map((i) async {
+        ProductModel p = ProductModel.empty();
+        dynamic item;
+
+        if (!_isDebit) {
+          String pName = i['item'];
+          p = await productService.getByName(pName.toLowerCase());
+          item = {'selectedItem': p.getNamePrice()};
+        } else {
+          item = TextEditingController(text: i['item']);
+        }
 
         detailsControllersNotifier.value.add([
           item,
           TextEditingController(text: i['qty'].toString()),
         ]);
+
+        setState(() => null);
       }).toList();
     }
 
