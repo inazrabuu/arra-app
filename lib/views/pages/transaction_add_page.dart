@@ -47,6 +47,10 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     TransactionModel t = getFormData();
     String res = await transactionService.save(t);
 
+    if (widget.transaction != null) {
+      toastMessage = AppStrings.transactionEditSuccess;
+    }
+
     if (res != AppStrings.success) {
       toastMessage = AppStrings.transactionAddFail;
     }
