@@ -2,7 +2,6 @@ import 'package:arrajewelry/data/app_data.dart';
 import 'package:arrajewelry/data/notifiers.dart';
 import 'package:arrajewelry/models/product_model.dart';
 import 'package:arrajewelry/views/widgets/image_cloud.dart';
-import 'package:arrajewelry/views/widgets/products_dropdown_widget.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

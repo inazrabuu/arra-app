@@ -8,6 +8,8 @@ class ProductModel {
   final bool inTiktok;
   final bool inShopee;
   final int stock;
+  String? sku;
+  String? namePrice;
   static String tableName = 'products';
 
   ProductModel({
@@ -20,7 +22,24 @@ class ProductModel {
     required this.inTiktok,
     required this.inShopee,
     required this.stock,
+    this.sku,
+    this.namePrice,
   });
+
+  factory ProductModel.empty() {
+    return ProductModel(
+      id: 0,
+      createdAt: DateTime.parse('1900-01-01 00:00:00'),
+      name: '',
+      cat: '',
+      image: '',
+      price: 0,
+      inTiktok: false,
+      inShopee: false,
+      stock: 0,
+      sku: '',
+    );
+  }
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
@@ -38,6 +57,7 @@ class ProductModel {
       inTiktok: json['in_tiktok'],
       inShopee: json['in_shopee'],
       stock: json['stock'],
+      sku: json['sku'],
     );
   }
 

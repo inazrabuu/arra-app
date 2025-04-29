@@ -25,6 +25,10 @@ class _TransactionPageState extends State<TransactionPage> {
   @override
   initState() {
     super.initState();
+    loadData();
+  }
+
+  loadData() {
     countUns();
     loadTransactions();
   }
@@ -44,8 +48,12 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   Future<void> _onRefresh() async {
-    countUns();
-    loadTransactions();
+    loadData();
+  }
+
+  Future<void> deleteData(int id) async {
+    final r = await transactionService.delete(id);
+    loadData();
   }
 
   @override
@@ -83,7 +91,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 color: Colors.grey[700],
               ),
             ),
-            TransactionListWidget(items: _transactions),
+            TransactionListWidget(items: _transactions, deleteData: deleteData),
           ],
         ),
       ),

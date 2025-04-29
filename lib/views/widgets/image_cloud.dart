@@ -1,6 +1,6 @@
+import 'package:arrajewelry/data/image_cache.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ImageCloud extends StatelessWidget {
   final String path;
@@ -23,13 +23,7 @@ class ImageCloud extends StatelessWidget {
   });
 
   Future<String> _getImageUrl() async {
-    final client = Supabase.instance.client;
-
-    final response = await client.storage
-        .from(bucket)
-        .createSignedUrl(path, 60);
-
-    return response;
+    return await ImageUrlCache().getSignedUrl(bucket, path);
   }
 
   @override

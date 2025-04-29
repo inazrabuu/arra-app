@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/data/notifiers.dart';
+import 'package:arrajewelry/models/product_model.dart';
 import 'package:arrajewelry/models/transaction_model.dart';
+import 'package:arrajewelry/services/product_service.dart';
 import 'package:arrajewelry/services/transaction_service.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_fieldset.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_trxdate_widget.dart';
@@ -10,13 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class TransactionAddPage extends StatefulWidget {
-  const TransactionAddPage({super.key});
+  final TransactionModel? transaction;
+
+  const TransactionAddPage({super.key, this.transaction});
 
   @override
   State<TransactionAddPage> createState() => _TransactionAddPageState();
 }
 
 class _TransactionAddPageState extends State<TransactionAddPage> {
+  final ProductService productService = ProductService();
   final TransactionService transactionService = TransactionService();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
@@ -26,6 +29,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   );
 
   final TextEditingController _trxDateController = TextEditingController();
+
+  int? _id;
+  DateTime? _createdAt;
   bool _isPaid = false;
   bool _isFulfilled = false;
   bool _isDebit = false;
@@ -40,6 +46,10 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
 
     TransactionModel t = getFormData();
     String res = await transactionService.save(t);
+
+    if (widget.transaction != null) {
+      toastMessage = AppStrings.transactionEditSuccess;
+    }
 
     if (res != AppStrings.success) {
       toastMessage = AppStrings.transactionAddFail;
@@ -90,6 +100,8 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     }
 
     return TransactionModel(
+      id: widget.transaction != null ? _id : null,
+      createdAt: widget.transaction != null ? _createdAt : null,
       orderNo: '',
       name: _nameController.text,
       description: _descriptionController.text,
@@ -123,6 +135,37 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
 
   @override
   void initState() {
+    if (widget.transaction != null) {
+      _id = widget.transaction!.id;
+      _createdAt = widget.transaction!.createdAt;
+      _trxDateController.text = widget.transaction!.trxDate.toString();
+      _nameController.text = widget.transaction!.name;
+      _descriptionController.text = widget.transaction!.description;
+      _totalController.text = widget.transaction!.total.toStringAsFixed(0);
+      _isPaid = widget.transaction!.isPaid;
+      _isFulfilled = widget.transaction!.isFulfilled;
+      _isDebit = widget.transaction!.isDebit;
+      widget.transaction!.detail.map((i) async {
+        ProductModel p = ProductModel.empty();
+        dynamic item;
+
+        if (!_isDebit) {
+          String pName = i['item'];
+          p = await productService.getByName(pName.toLowerCase());
+          item = {'selectedItem': p.getNamePrice()};
+        } else {
+          item = TextEditingController(text: i['item']);
+        }
+
+        detailsControllersNotifier.value.add([
+          item,
+          TextEditingController(text: i['qty'].toString()),
+        ]);
+
+        setState(() => null);
+      }).toList();
+    }
+
     super.initState();
   }
 
@@ -135,7 +178,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          AppStrings.transactionAddPageTitle,
+          widget.transaction == null
+              ? AppStrings.transactionAddPageTitle
+              : AppStrings.transactionEditPageTitle,
           style: TextStyle(fontFamily: "Poppins"),
         ),
       ),

@@ -7,6 +7,23 @@ class ProductService {
   final bucket = dotenv.env['SUPABASE_BUCKET'];
   final bucketProduct = dotenv.env['BUCKET_PRODUCT'];
 
+  Future<ProductModel> getByName(String name) async {
+    ProductModel r = ProductModel.empty();
+    final response =
+        await client
+            .from(ProductModel.tableName)
+            .select()
+            .eq('name', name)
+            .limit(1)
+            .maybeSingle();
+
+    if (response != null) {
+      r = ProductModel.fromJson(response);
+    }
+
+    return r;
+  }
+
   Future<List<ProductModel>> fetchAll({int limit = 100}) async {
     final response = await client
         .from(ProductModel.tableName)
