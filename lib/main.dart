@@ -1,4 +1,5 @@
 import 'package:arrajewelry/constants/app_strings.dart';
+import 'package:arrajewelry/data/app_data.dart';
 import 'package:arrajewelry/views/widget_tree.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -14,6 +15,8 @@ Future<void> main() async {
     url: dotenv.env['SUPABASE_URL']!,
     anonKey: dotenv.env['SUPABASE_KEY']!,
   );
+
+  await AppData().loadProducts();
 
   runApp(const MyApp());
 }
