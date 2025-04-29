@@ -38,10 +38,10 @@ class TransactionService {
 
     final response = await _client
         .from(TransactionModel.tableName)
-        .select('id', const FetchOptions(count: CountOption.exact))
+        .select('id')
         .eq(field, false);
 
-    return response.count;
+    return response.length;
   }
 
   Future<double> calculateBalance() async {
