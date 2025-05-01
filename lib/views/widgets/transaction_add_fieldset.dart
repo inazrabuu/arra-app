@@ -127,10 +127,11 @@ class _TransactionAddFieldsetState extends State<TransactionAddFieldset> {
                   ),
                   SizedBox(width: 10),
                   Expanded(
-                    flex: 2,
+                    flex: MediaQuery.of(context).size.width < 375 ? 1 : 2,
                     child: TextFormField(
                       controller: entry.value[1],
                       decoration: InputDecoration(labelText: 'Qty'),
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                 ],
