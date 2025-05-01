@@ -22,7 +22,7 @@ class ProductsGridWidget extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 0,
         crossAxisSpacing: 0,
-        childAspectRatio: 0.68,
+        childAspectRatio: MediaQuery.of(context).size.width > 375 ? 0.68 : 0.65,
       ),
       itemBuilder: (context, index) {
         return Padding(
