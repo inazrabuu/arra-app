@@ -78,7 +78,7 @@ class _TransactionAddFieldsetState extends State<TransactionAddFieldset> {
               return Row(
                 children: [
                   Expanded(
-                    flex: 7,
+                    flex: 8,
                     child:
                         !widget.isDebit
                             ? DropdownButtonFormField<String>(
