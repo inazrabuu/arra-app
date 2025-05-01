@@ -71,11 +71,14 @@ class ProductsGridWidget extends StatelessWidget {
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
-                      child: AppText.gridTitle(
+                      child: Text(
                         StringUtils.capitalize(
                           items[index].name,
                           allWords: true,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 16),
                       ),
                     ),
                   ),
