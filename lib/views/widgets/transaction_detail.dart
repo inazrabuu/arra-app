@@ -35,6 +35,8 @@ class TransactionDetailWidget extends StatelessWidget {
               : CandyColors.colors['green'],
     };
 
+    double detailsHeight = MediaQuery.of(context).size.width < 375 ? 130 : 150;
+
     return Row(
       children: [
         Expanded(
@@ -148,7 +150,7 @@ class TransactionDetailWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Container(
-                  constraints: BoxConstraints(maxHeight: 150),
+                  constraints: BoxConstraints(maxHeight: detailsHeight),
                   padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
