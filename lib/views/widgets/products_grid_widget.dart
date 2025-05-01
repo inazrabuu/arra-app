@@ -13,6 +13,12 @@ class ProductsGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double childAspectRatio =
+        MediaQuery.of(context).size.width > 375
+            ? 0.68
+            : MediaQuery.of(context).size.width < 370
+            ? 0.6
+            : 0.65;
     return GridView.builder(
       itemCount: items.length,
       shrinkWrap: true,
@@ -22,7 +28,7 @@ class ProductsGridWidget extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 0,
         crossAxisSpacing: 0,
-        childAspectRatio: MediaQuery.of(context).size.width > 375 ? 0.68 : 0.65,
+        childAspectRatio: childAspectRatio,
       ),
       itemBuilder: (context, index) {
         return Padding(
