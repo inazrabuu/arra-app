@@ -164,6 +164,7 @@ class TransactionListItemWidget extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
+                      flex: 6,
                       child: Row(
                         children: [
                           Icon(
@@ -175,6 +176,7 @@ class TransactionListItemWidget extends StatelessWidget {
                       ),
                     ),
                     Expanded(
+                      flex: 4,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: pills,
