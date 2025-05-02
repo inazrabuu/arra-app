@@ -1,14 +1,21 @@
 import 'package:arrajewelry/constants/candy_colors.dart';
 import 'package:arrajewelry/models/transaction_model.dart';
+import 'package:arrajewelry/utils/helpers.dart';
 import 'package:arrajewelry/views/theme/text_styles.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class TransactionDetailWidget extends StatelessWidget {
   final TransactionModel transaction;
+  final BuildContext? context;
 
-  const TransactionDetailWidget({super.key, required this.transaction});
+  const TransactionDetailWidget({
+    super.key,
+    required this.transaction,
+    this.context,
+  });
 
   Icon boolIcon(bool value) {
     return value
@@ -114,7 +121,16 @@ class TransactionDetailWidget extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          String textToCopy = Helpers.trxToClipboard(
+                            transaction,
+                          );
+
+                          Clipboard.setData(ClipboardData(text: textToCopy));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Copied to clipboard')),
+                          );
+                        },
                         child: Icon(Icons.content_copy_rounded),
                       ),
                     ),
@@ -183,34 +199,6 @@ class TransactionDetailWidget extends StatelessWidget {
                       );
                     },
                   ),
-                  // child: Column(
-                  //   children: [
-                  //     ...transaction.detail.asMap().entries.map((e) {
-                  //       String item = StringUtils.capitalize(
-                  //         e.value['item'],
-                  //         allWords: true,
-                  //       );
-                  //       String qty = e.value['qty'].toString();
-                  //       return Column(
-                  //         children: [
-                  //           Padding(
-                  //             padding: const EdgeInsets.symmetric(
-                  //               vertical: 0,
-                  //               horizontal: 8.0,
-                  //             ),
-                  //             child: Row(
-                  //               children: [
-                  //                 Expanded(child: Text(item)),
-                  //                 Expanded(child: Center(child: Text(qty))),
-                  //               ],
-                  //             ),
-                  //           ),
-                  //           SizedBox(height: 4),
-                  //         ],
-                  //       );
-                  //     }),
-                  //   ],
-                  // ),
                 ),
               ],
             ),
