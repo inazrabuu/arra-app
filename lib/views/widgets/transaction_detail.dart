@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:arrajewelry/constants/candy_colors.dart';
 import 'package:arrajewelry/models/transaction_model.dart';
 import 'package:arrajewelry/utils/helpers.dart';
@@ -127,9 +128,10 @@ class TransactionDetailWidget extends StatelessWidget {
                           );
 
                           Clipboard.setData(ClipboardData(text: textToCopy));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Copied to clipboard')),
-                          );
+                          Flushbar(
+                            message: 'Copied to Clipboard',
+                            duration: Duration(seconds: 2),
+                          )..show(context);
                         },
                         child: Icon(Icons.content_copy_rounded),
                       ),
