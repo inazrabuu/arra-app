@@ -1,4 +1,5 @@
 import 'package:arrajewelry/models/transaction_model.dart';
+import 'package:basic_utils/basic_utils.dart';
 import 'package:intl/intl.dart';
 
 class Helpers {
@@ -22,13 +23,20 @@ class Helpers {
     text += 'Name: ${t.name}\n\n';
     text += 'Purchase:\n';
     for (var i in t.detail) {
-      text += '- ${i['item']} ${i['qty']}\n';
+      text +=
+          '- ${StringUtils.capitalize(i['item'], allWords: true)} ${i['qty']}\n';
     }
     text += '\nTotal: ${Helpers.priceIdrFormat(t.total)}\n\n';
     text += 'Please transfer your payment to:\n';
-    text += 'BCA 1781199856\n';
-    text += 'Arman Barzani Rizal';
+
+    for (var i in Helpers.getPaymentInfo()) {
+      text += '$i\n';
+    }
 
     return text;
+  }
+
+  static List<String> getPaymentInfo() {
+    return ["BCA 1280360933", "Artie Maharani"];
   }
 }
