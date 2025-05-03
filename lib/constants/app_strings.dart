@@ -24,4 +24,5 @@ class AppStrings {
   static const greetingNoon = 'Good Day';
   static const greetingNight = 'Good Evening';
   static const success = 'Sucess!';
+  static const downloadFailed = '❌ Failed to download file';
 }
