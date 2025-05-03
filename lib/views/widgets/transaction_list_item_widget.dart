@@ -129,8 +129,10 @@ class TransactionListItemWidget extends StatelessWidget {
               context: context,
               isScrollControlled: false, // if you want full screen
               builder:
-                  (context) =>
-                      TransactionDetailWidget(transaction: transaction),
+                  (context) => TransactionDetailWidget(
+                    transaction: transaction,
+                    context: context,
+                  ),
             );
           },
           child: Padding(
