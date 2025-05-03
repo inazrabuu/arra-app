@@ -121,19 +121,32 @@ class TransactionDetailWidget extends StatelessWidget {
                     ),
                     Expanded(
                       flex: 2,
-                      child: InkWell(
-                        onTap: () {
-                          String textToCopy = Helpers.trxToClipboard(
-                            transaction,
-                          );
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              String textToCopy = Helpers.trxToClipboard(
+                                transaction,
+                              );
 
-                          Clipboard.setData(ClipboardData(text: textToCopy));
-                          Flushbar(
-                            message: 'Copied to Clipboard',
-                            duration: Duration(seconds: 2),
-                          )..show(context);
-                        },
-                        child: Icon(Icons.content_copy_rounded),
+                              Clipboard.setData(
+                                ClipboardData(text: textToCopy),
+                              );
+                              Flushbar(
+                                message: 'Copied to Clipboard',
+                                duration: Duration(seconds: 2),
+                              )..show(context);
+                            },
+                            child: Icon(Icons.content_copy_rounded),
+                          ),
+                          SizedBox(width: 8),
+                          InkWell(
+                            onTap: () {
+                              Helpers.downloadInvoice(transaction, context);
+                            },
+                            child: Icon(Icons.file_download_rounded),
+                          ),
+                        ],
                       ),
                     ),
                   ],
