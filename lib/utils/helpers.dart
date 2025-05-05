@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/models/transaction_model.dart';
 import 'package:basic_utils/basic_utils.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -134,7 +135,21 @@ class Helpers {
 
   static Future<bool> requestPermission() async {
     if (Platform.isAndroid) {
-      final status = await Permission.storage.request();
+      final deviceInfo = DeviceInfoPlugin();
+      final androidInfo = await deviceInfo.androidInfo;
+      final sdkInt = androidInfo.version.sdkInt;
+
+      final status =
+          sdkInt >= 30
+              ? await Permission.manageExternalStorage.request()
+              : await Permission.storage.request();
+
+      if (status.isPermanentlyDenied) {
+        await openAppSettings();
+      }
+
+      print("Permission is : ${status.isGranted}");
+
       return status.isGranted;
     }
 
