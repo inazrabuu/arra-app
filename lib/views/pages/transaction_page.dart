@@ -52,7 +52,7 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   Future<void> deleteData(int id) async {
-    final r = await transactionService.delete(id);
+    final _ = await transactionService.delete(id);
     loadData();
   }
 
