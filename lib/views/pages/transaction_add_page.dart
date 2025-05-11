@@ -4,6 +4,7 @@ import 'package:arrajewelry/models/product_model.dart';
 import 'package:arrajewelry/models/transaction_model.dart';
 import 'package:arrajewelry/services/product_service.dart';
 import 'package:arrajewelry/services/transaction_service.dart';
+import 'package:arrajewelry/views/widget_tree.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_fieldset.dart';
 import 'package:arrajewelry/views/widgets/transaction_add_trxdate_widget.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     );
 
     setState(() => _isLoading = false);
+
+    transactionPageKey.currentState?.loadData();
+    selectedPageNotifier.value = 2;
 
     Navigator.of(context).pop();
   }
