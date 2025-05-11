@@ -58,7 +58,7 @@ class _HomeBalanceWidgetState extends State<HomeBalanceWidget> {
                     isMasked = !isMasked;
                   });
                 },
-                icon: Icon(iconData, color: Colors.white),
+                icon: Icon(iconData, color: Colors.white, size: 18),
               ),
             ),
           ],
