@@ -1,5 +1,6 @@
 import 'package:arrajewelry/constants/app_strings.dart';
 import 'package:arrajewelry/utils/helpers.dart';
+import 'package:arrajewelry/views/widgets/home_balance_widget.dart';
 import 'package:arrajewelry/views/widgets/status_badge_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -25,12 +26,13 @@ class HomeStatusSnapshotWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          StatusBadgeWidget(
-            title: '',
-            text: Helpers.numberFormat(balance),
-            color: balance > 0 ? 2 : 3,
-            size: 2,
-          ),
+          // StatusBadgeWidget(
+          //   title: '',
+          //   text: Helpers.numberFormat(balance),
+          //   color: balance > 0 ? 2 : 3,
+          //   size: 2,
+          // ),
+          HomeBalanceWidget(balance: balance),
           Row(
             children: [
               Expanded(

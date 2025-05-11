@@ -155,4 +155,8 @@ class Helpers {
 
     return true;
   }
+
+  static String maskString(String str) {
+    return List.filled(str.length, '*').join();
+  }
 }
