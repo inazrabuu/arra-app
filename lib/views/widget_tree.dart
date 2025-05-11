@@ -8,7 +8,13 @@ import 'package:arrajewelry/views/widgets/navbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-List<Widget> pages = [HomePage(), ProductPage(), TransactionPage()];
+final transactionPageKey = GlobalKey<TransactionPageState>();
+
+List<Widget> pages = [
+  HomePage(),
+  ProductPage(),
+  TransactionPage(key: transactionPageKey),
+];
 
 class WidgetTree extends StatelessWidget {
   const WidgetTree({super.key});
