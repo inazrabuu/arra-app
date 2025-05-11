@@ -13,10 +13,10 @@ class TransactionPage extends StatefulWidget {
   const TransactionPage({super.key});
 
   @override
-  State<TransactionPage> createState() => _TransactionPageState();
+  State<TransactionPage> createState() => TransactionPageState();
 }
 
-class _TransactionPageState extends State<TransactionPage> {
+class TransactionPageState extends State<TransactionPage> {
   final TransactionService transactionService = TransactionService();
   List<TransactionModel> _transactions = [];
   int _unpaid = 0;
